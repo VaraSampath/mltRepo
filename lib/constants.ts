@@ -22,3 +22,16 @@ export const patients = [
     refferedBy: "Dr. Smith",
   },
 ];
+
+export const doctors = [
+  {
+    id: 1,
+    name: "Dilip Kumar",
+    address: "KGM",
+  },
+  {
+    id: 2,
+    name: "CH. Jagadheesh, MBBS",
+    address: "Koyyalagudem",
+  },
+];

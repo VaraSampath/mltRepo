@@ -1,5 +1,5 @@
-import React from "react";
-import { PatientSchemaType } from "@/lib/types";
+"use client";
+import { NormalValuesSchemaType } from "@/lib/types";
 import {
   createColumnHelper,
   flexRender,
@@ -9,8 +9,8 @@ import {
 import styles from "./styles.module.css";
 import { useQuery } from "@tanstack/react-query";
 
-const PatientsTable = () => {
-  const columnHelper = createColumnHelper<PatientSchemaType>();
+const NormalValuesTable = () => {
+  const columnHelper = createColumnHelper<NormalValuesSchemaType>();
 
   const columns = [
     columnHelper.accessor((row) => row.name, {
@@ -18,47 +18,42 @@ const PatientsTable = () => {
       cell: (info) => <i>{info.getValue()}</i>,
       header: () => <span>Name</span>,
     }),
-    columnHelper.accessor((row) => row.referredBy, {
-      id: "referredBy",
+    columnHelper.accessor((row) => row.units, {
+      id: "units",
       cell: (info) => <i>{info.getValue()}</i>,
-      header: () => <span>referred By</span>,
+      header: () => <span>Units</span>,
     }),
-    columnHelper.accessor((row) => row.gender, {
-      id: "gender",
+    columnHelper.accessor((row) => row.maleMax, {
+      id: "maleMax",
       cell: (info) => <i>{info.getValue()}</i>,
-      header: () => <span>Gender</span>,
+      header: () => <span>Male Max</span>,
     }),
 
-    columnHelper.accessor((row) => row.age, {
-      id: "age",
+    columnHelper.accessor((row) => row.maleMin, {
+      id: "maleMin",
       cell: (info) => <i>{info.getValue()}</i>,
-      header: () => <span>Age</span>,
+      header: () => <span>Male Min</span>,
     }),
-    columnHelper.accessor((row) => row.village, {
-      id: "village",
+    columnHelper.accessor((row) => row.femaleMax, {
+      id: "femaleMax",
       cell: (info) => <i>{info.getValue()}</i>,
-      header: () => <span>Village</span>,
+      header: () => <span>Female Max</span>,
     }),
-    columnHelper.accessor((row) => row.phone, {
-      id: "phone",
+    columnHelper.accessor((row) => row.femaleMin, {
+      id: "femaleMin",
       cell: (info) => <i>{info.getValue()}</i>,
-      header: () => <span>Phone</span>,
-    }),
-    columnHelper.accessor((row) => row.amount, {
-      id: "amount",
-      cell: (info) => <i>{info.getValue()}</i>,
-      header: () => <span>Amount</span>,
+      header: () => <span>Female Min</span>,
     }),
   ];
 
-  const fetchPatientsData = async (): Promise<PatientSchemaType[]> => {
-    const res = await fetch("pages/api/patients");
+  const fetchPatientsData = async (): Promise<NormalValuesSchemaType[]> => {
+    const res = await fetch("pages/api/normal-values");
     const data = await res.json();
     return data;
   };
 
   const { isPending, isError, data, error } = useQuery({
-    queryKey: ["patientsTable"],
+    queryKey: ["NormalValuesTable"],
     queryFn: fetchPatientsData,
   });
 
@@ -125,4 +120,4 @@ const PatientsTable = () => {
   );
 };
 
-export default PatientsTable;
+export default NormalValuesTable;
