@@ -14,6 +14,14 @@ import {
 import { normalValuesSchema, NormalValuesSchemaType } from "@/lib/types";
 import { Input } from "../ui/input";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { testGroups } from "@/lib/constants";
 
 const AddNormalValues = () => {
   const form = useForm<NormalValuesSchemaType>({
@@ -52,10 +60,40 @@ const AddNormalValues = () => {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <FormField
             control={form.control}
+            name="testGroup"
+            render={({ field: { value, onChange } }) => (
+              <FormItem className="flex flex-col gap-1">
+                <FormLabel className="">Test Group</FormLabel>
+                <FormControl>
+                  <Select
+                    onValueChange={onChange}
+                    value={value}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select Test Group" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {testGroups.map((testGroup) => (
+                        <SelectItem
+                          key={testGroup.value}
+                          value={testGroup.value}
+                        >
+                          {testGroup.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name="name"
             render={({ field: { value, onChange } }) => (
               <FormItem className="flex flex-col gap-1">
-                <FormLabel className="mt-1.5">Name</FormLabel>
+                <FormLabel className="">Name</FormLabel>
                 <FormControl>
                   <Input
                     value={value}

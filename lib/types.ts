@@ -24,6 +24,7 @@ export const patientSchema = z.object({
 });
 
 export const normalValuesSchema = z.object({
+  testGroup: z.string().min(1).max(150),
   name: z.string().min(1).max(150),
   units: z.string().min(1).optional(),
   maleMax: z

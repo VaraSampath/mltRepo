@@ -8,6 +8,7 @@ import {
 } from "@tanstack/react-table";
 import styles from "./styles.module.css";
 import { useQuery } from "@tanstack/react-query";
+import { Trash2 } from "lucide-react";
 
 const NormalValuesTable = () => {
   const columnHelper = createColumnHelper<NormalValuesSchemaType>();
@@ -18,6 +19,13 @@ const NormalValuesTable = () => {
       cell: (info) => <i>{info.getValue()}</i>,
       header: () => <span>Name</span>,
     }),
+
+    columnHelper.accessor((row) => row.testGroup, {
+      id: "testGroup",
+      cell: (info) => <i>{info.getValue()}</i>,
+      header: () => <span>Test Group</span>,
+    }),
+
     columnHelper.accessor((row) => row.units, {
       id: "units",
       cell: (info) => <i>{info.getValue()}</i>,
@@ -47,6 +55,12 @@ const NormalValuesTable = () => {
       cell: (info) => <i>{info.getValue()}</i>,
       header: () => <span>Female Max</span>,
     }),
+
+    columnHelper.accessor((row) => row, {
+      id: "description",
+      cell: () => <i>{<Trash2 size={16} />}</i>,
+      header: () => <span>Actions</span>,
+    }),
   ];
 
   const fetchNormalValuesData = async (): Promise<NormalValuesSchemaType[]> => {
@@ -75,51 +89,53 @@ const NormalValuesTable = () => {
   }
 
   return (
-    <table className={styles.table}>
-      <thead className={styles.thead}>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <tr key={headerGroup.id}>
-            {headerGroup.headers.map((header) => (
-              <th key={header.id}>
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-              </th>
-            ))}
-          </tr>
-        ))}
-      </thead>
-      <tbody className={styles.tbody}>
-        {table.getRowModel().rows.map((row) => (
-          <tr key={row.id}>
-            {row.getVisibleCells().map((cell) => (
-              <td key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-      <tfoot>
-        {table.getFooterGroups().map((footerGroup) => (
-          <tr key={footerGroup.id}>
-            {footerGroup.headers.map((header) => (
-              <th key={header.id}>
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(
-                      header.column.columnDef.footer,
-                      header.getContext()
-                    )}
-              </th>
-            ))}
-          </tr>
-        ))}
-      </tfoot>
-    </table>
+    <div className={styles.tableContainer}>
+      <table className={styles.table}>
+        <thead className={styles.thead}>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <th key={header.id}>
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody className={styles.tbody}>
+          {table.getRowModel().rows.map((row) => (
+            <tr key={row.id}>
+              {row.getVisibleCells().map((cell) => (
+                <td key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+        <tfoot>
+          {table.getFooterGroups().map((footerGroup) => (
+            <tr key={footerGroup.id}>
+              {footerGroup.headers.map((header) => (
+                <th key={header.id}>
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                        header.column.columnDef.footer,
+                        header.getContext()
+                      )}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </tfoot>
+      </table>
+    </div>
   );
 };
 

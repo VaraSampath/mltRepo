@@ -3,6 +3,15 @@
   width: 100%;
   border-radius: 5px;
   overflow-x: auto;
+  margin-top: 60px;
+  @media (max-width: 768px) {
+    margin-top: 40px;
+  }
+}
+
+.tableContainer {
+  max-width: 100%;
+  overflow-x: auto;
 }
 
 .thead {
@@ -12,10 +21,11 @@
 .thead tr th {
   border-bottom: 1px solid #ddd;
   padding-block: 10px;
-  padding-inline: 10px;
+  padding-inline: 20px;
+  white-space: nowrap;
 }
 .tbody tr td {
   border-bottom: 1px solid #ddd;
   padding-block: 10px;
-  padding-inline: 10px;
+  padding-inline: 20px;
 }

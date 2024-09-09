@@ -35,3 +35,13 @@ export const doctors = [
     address: "Koyyalagudem",
   },
 ];
+
+export const testGroups = [
+  { value: "hemogram", label: "Hemogram/CBP/Blood Coagulation/PTT" },
+  { value: "diabaties", label: "Diabaties/Bio Chemistry" },
+  { value: "urine", label: "Urine/Microscope" },
+  { value: "stool", label: "Stool/Semen" },
+  { value: "lipid", label: "Lipid/RFT/Serum" },
+  { value: "serology", label: "Serology" },
+  { value: "hormones", label: "Hormones" },
+];

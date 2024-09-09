@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const NormalValues = new mongoose.Schema(
   {
+    testGroup: { type: String },
     name: { type: String },
     units: { type: String },
     maleMax: { type: Number },
