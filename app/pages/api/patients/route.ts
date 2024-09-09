@@ -9,7 +9,7 @@ export const dynamic = "force-static";
 
 export async function GET() {
   try {
-    const patients = await Patients.find();
+    const patients = await Patients.find().sort({ createdAt: -1 }).exec();
     return NextResponse.json(patients);
   } catch (e) {
     console.error(e);

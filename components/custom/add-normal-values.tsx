@@ -22,11 +22,14 @@ import {
   SelectValue,
 } from "../ui/select";
 import { testGroups } from "@/lib/constants";
+import { useToast } from "@/hooks/use-toast";
 
 const AddNormalValues = () => {
   const form = useForm<NormalValuesSchemaType>({
     resolver: zodResolver(normalValuesSchema),
   });
+
+  const { toast } = useToast();
 
   const addNormalValuesData = async (
     bodyData: NormalValuesSchemaType
@@ -44,6 +47,11 @@ const AddNormalValues = () => {
     mutationFn: addNormalValuesData,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["NormalValuesTable"] });
+      toast({
+        title: "Success",
+        description: "Value added successfully",
+        variant:"default"
+      });
     },
   });
 

@@ -9,7 +9,9 @@ export const dynamic = "force-static";
 
 export async function GET() {
   try {
-    const normalValues = await NormalValues.find();
+    const normalValues = await NormalValues.find()
+      .sort({ updatedAt: -1 })
+      .exec();
     return NextResponse.json(normalValues);
   } catch (e) {
     console.error(e);
@@ -30,4 +32,14 @@ export async function POST(req: NextRequest) {
     console.error(e);
     return NextResponse.json({ error: "An error occurred" }, { status: 500 });
   }
+}
+
+export async function DELETE(req: NextRequest) {
+  const body = await req.json();
+  const id = body.id;
+  await NormalValues.findByIdAndDelete(id);
+  return NextResponse.json(
+    { message: "Value deleted successfully" },
+    { status: 200 }
+  );
 }

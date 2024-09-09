@@ -7,11 +7,13 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import styles from "./styles.module.css";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Trash2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const NormalValuesTable = () => {
   const columnHelper = createColumnHelper<NormalValuesSchemaType>();
+  const { toast } = useToast();
 
   const columns = [
     columnHelper.accessor((row) => row.name, {
@@ -55,12 +57,6 @@ const NormalValuesTable = () => {
       cell: (info) => <i>{info.getValue()}</i>,
       header: () => <span>Female Max</span>,
     }),
-
-    columnHelper.accessor((row) => row, {
-      id: "description",
-      cell: () => <i>{<Trash2 size={16} />}</i>,
-      header: () => <span>Actions</span>,
-    }),
   ];
 
   const fetchNormalValuesData = async (): Promise<NormalValuesSchemaType[]> => {
@@ -69,7 +65,37 @@ const NormalValuesTable = () => {
     return data;
   };
 
-  const { isPending, isError, data, error } = useQuery({
+  const deleteNormalValuesData = async (row: NormalValuesSchemaType) => {
+    const res = await fetch("pages/api/normal-values/", {
+      method: "DELETE",
+      body: JSON.stringify({ id: row._id }),
+    });
+
+    const data = await res.json();
+    return data;
+  };
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: deleteNormalValuesData,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["NormalValuesTable"] });
+      toast({
+        title: "Deleted",
+        description: "Value deleted successfully",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Error deleting normal values",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const { isPending, isError, data } = useQuery({
     queryKey: ["NormalValuesTable"],
     queryFn: fetchNormalValuesData,
   });
@@ -85,7 +111,11 @@ const NormalValuesTable = () => {
   }
 
   if (isError) {
-    return <span>Error: {error.message}</span>;
+    toast({
+      title: "Error",
+      description: "Error fetching normal values",
+      variant: "destructive",
+    });
   }
 
   return (
@@ -104,6 +134,7 @@ const NormalValuesTable = () => {
                       )}
                 </th>
               ))}
+              <th>Actions</th>
             </tr>
           ))}
         </thead>
@@ -115,25 +146,17 @@ const NormalValuesTable = () => {
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
+              <td>
+                <Trash2
+                  size={16}
+                  onClick={() => {
+                    mutation.mutate(row.original);
+                  }}
+                />
+              </td>
             </tr>
           ))}
         </tbody>
-        <tfoot>
-          {table.getFooterGroups().map((footerGroup) => (
-            <tr key={footerGroup.id}>
-              {footerGroup.headers.map((header) => (
-                <th key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.footer,
-                        header.getContext()
-                      )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </tfoot>
       </table>
     </div>
   );
