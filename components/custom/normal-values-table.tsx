@@ -23,30 +23,33 @@ const NormalValuesTable = () => {
       cell: (info) => <i>{info.getValue()}</i>,
       header: () => <span>Units</span>,
     }),
-    columnHelper.accessor((row) => row.maleMax, {
-      id: "maleMax",
-      cell: (info) => <i>{info.getValue()}</i>,
-      header: () => <span>Male Max</span>,
-    }),
 
     columnHelper.accessor((row) => row.maleMin, {
       id: "maleMin",
       cell: (info) => <i>{info.getValue()}</i>,
       header: () => <span>Male Min</span>,
     }),
-    columnHelper.accessor((row) => row.femaleMax, {
-      id: "femaleMax",
+
+    columnHelper.accessor((row) => row.maleMax, {
+      id: "maleMax",
       cell: (info) => <i>{info.getValue()}</i>,
-      header: () => <span>Female Max</span>,
+      header: () => <span>Male Max</span>,
     }),
+
     columnHelper.accessor((row) => row.femaleMin, {
       id: "femaleMin",
       cell: (info) => <i>{info.getValue()}</i>,
       header: () => <span>Female Min</span>,
     }),
+
+    columnHelper.accessor((row) => row.femaleMax, {
+      id: "femaleMax",
+      cell: (info) => <i>{info.getValue()}</i>,
+      header: () => <span>Female Max</span>,
+    }),
   ];
 
-  const fetchPatientsData = async (): Promise<NormalValuesSchemaType[]> => {
+  const fetchNormalValuesData = async (): Promise<NormalValuesSchemaType[]> => {
     const res = await fetch("pages/api/normal-values");
     const data = await res.json();
     return data;
@@ -54,7 +57,7 @@ const NormalValuesTable = () => {
 
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["NormalValuesTable"],
-    queryFn: fetchPatientsData,
+    queryFn: fetchNormalValuesData,
   });
 
   const table = useReactTable({

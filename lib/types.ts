@@ -10,26 +10,46 @@ export const patientSchema = z.object({
       message: "Expected number, received a string",
     })
     .optional(),
-  ageUnit: z.string().min(2).max(50).optional(),
-  gender: z.string().min(2).max(50).optional(),
+  ageUnit: z.string().min(2).optional(),
+  gender: z.string().min(2).optional(),
   phone: z.string().min(10).max(10).optional(),
-  village: z.string().min(2).max(50).optional(),
+  village: z.string().min(2).max(150).optional(),
   amount: z
     .string()
     .refine((val) => !Number.isNaN(parseInt(val, 10)), {
       message: "Expected number, received a string",
     })
     .optional(),
-  referredBy: z.string().min(2).max(50).optional(),
+  referredBy: z.string().min(2).max(150).optional(),
 });
 
 export const normalValuesSchema = z.object({
-  name: z.string().min(2).max(150),
-  units: z.string().min(2).max(150).optional(),
-  maleMax: z.string().min(2).max(150).optional(),
-  maleMin: z.string().min(2).max(150).optional(),
-  femaleMax: z.string().min(2).max(150).optional(),
-  femaleMin: z.string().min(2).max(150).optional(),
+  name: z.string().min(1).max(150),
+  units: z.string().min(1).optional(),
+  maleMax: z
+    .string()
+    .refine((val) => !Number.isNaN(parseInt(val, 10)), {
+      message: "Expected number, received a string",
+    })
+    .optional(),
+  maleMin: z
+    .string()
+    .refine((val) => !Number.isNaN(parseInt(val, 10)), {
+      message: "Expected number, received a string",
+    })
+    .optional(),
+  femaleMax: z
+    .string()
+    .refine((val) => !Number.isNaN(parseInt(val, 10)), {
+      message: "Expected number, received a string",
+    })
+    .optional(),
+  femaleMin: z
+    .string()
+    .refine((val) => !Number.isNaN(parseInt(val, 10)), {
+      message: "Expected number, received a string",
+    })
+    .optional(),
 });
 
 export type PatientSchemaType = z.infer<typeof patientSchema>;
