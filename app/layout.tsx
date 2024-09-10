@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Provider } from "@/components/custom/provider";
 import { Toaster } from "@/components/ui/toaster";
+import SessionWrapper from "@/components/custom/session-wrapper";
+import Header from "@/components/custom/header";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,10 +32,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Provider>
-          <div className="container mx-auto px-4 py-5">{children}</div>
-          <Toaster />
-        </Provider>
+        <SessionWrapper>
+          <Provider>
+            <div className="container mx-auto px-4 py-5">
+              <Header />
+              {children}
+            </div>
+            <Toaster />
+          </Provider>
+        </SessionWrapper>
       </body>
     </html>
   );

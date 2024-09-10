@@ -23,11 +23,14 @@ import {
 } from "../ui/select";
 import { testGroups } from "@/lib/constants";
 import { useToast } from "@/hooks/use-toast";
+import { useSession } from "next-auth/react";
 
 const AddNormalValues = () => {
   const form = useForm<NormalValuesSchemaType>({
     resolver: zodResolver(normalValuesSchema),
   });
+
+  const { data: session } = useSession();
 
   const { toast } = useToast();
 
@@ -50,13 +53,13 @@ const AddNormalValues = () => {
       toast({
         title: "Success",
         description: "Value added successfully",
-        variant:"default"
+        variant: "default",
       });
     },
   });
 
   function onSubmit(values: NormalValuesSchemaType) {
-    mutation.mutate(values);
+    mutation.mutate({ ...values, modifiedBy: session?.user?.email ?? "" });
   }
 
   return (

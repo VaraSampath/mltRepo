@@ -27,6 +27,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "app/pages/api/normal-values/[id]"
-  ],
+, "app/pages/api/auth/[...nextauth]/route.ts", "app/pages/_app.tsx"  ],
   "exclude": ["node_modules"]
 }

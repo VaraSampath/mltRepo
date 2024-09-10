@@ -9,6 +9,7 @@ const NormalValues = new mongoose.Schema(
     maleMin: { type: Number },
     femaleMax: { type: Number },
     femaleMin: { type: Number },
+    modifiedBy: { type: String },
   },
   {
     timestamps: true,
