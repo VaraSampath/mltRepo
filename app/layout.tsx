@@ -5,6 +5,7 @@ import { Provider } from "@/components/custom/provider";
 import { Toaster } from "@/components/ui/toaster";
 import SessionWrapper from "@/components/custom/session-wrapper";
 import Header from "@/components/custom/header";
+import { Suspense } from "react";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -36,7 +37,7 @@ export default function RootLayout({
           <Provider>
             <div className="container mx-auto px-4 py-5">
               <Header />
-              {children}
+              <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
             </div>
             <Toaster />
           </Provider>
