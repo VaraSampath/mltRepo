@@ -2,11 +2,11 @@
 
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
-const LoginPage = () => {
+const Page = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = (searchParams.get("callbackUrl") as string) || "/";
+  const callbackUrl = (searchParams.get("callbackUrl") as string) ?? "/";
   if (session?.user?.email) {
     router.push(callbackUrl);
   }
@@ -17,4 +17,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default Page;
