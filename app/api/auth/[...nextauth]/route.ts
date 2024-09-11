@@ -1,4 +1,5 @@
-import NextAuth, { SessionStrategy } from "next-auth";
+import NextAuth, { Account, Profile, SessionStrategy, User } from "next-auth";
+import { AdapterUser } from "next-auth/adapters";
 import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions = {
@@ -8,10 +9,22 @@ export const authOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
-  
+  callbacks: {
+    async signIn({
+      account,
+    }: {
+      user: User | AdapterUser;
+      account: Account | null;
+      profile?: Profile;
+    }) {
+      if (account?.provider === "google") {
+        console.log("yes its google");
+      }
+      return true;
+    },
+  },
   session: {
     strategy: "jwt" as SessionStrategy,
-    
   },
   pages: {
     signIn: "/login",

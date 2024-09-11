@@ -1,5 +1,6 @@
 "use client";
 
+import LoginForm from "@/components/custom/login-form";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 const Page = () => {
@@ -11,8 +12,8 @@ const Page = () => {
     router.push(callbackUrl);
   }
   return (
-    <div className="flex  items-center justify-center h-[80dvh] text-2xl sm:text-6xl ">
-      Hello, Please sign In.
+    <div className="flex  items-center justify-center h-[80dvh]">
+      <LoginForm />
     </div>
   );
 };
