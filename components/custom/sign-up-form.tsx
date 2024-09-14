@@ -14,45 +14,47 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { Separator } from "../ui/separator";
+import { signUpUser } from "@/lib/actions";
 import { toast } from "@/hooks/use-toast";
-const LoginForm = () => {
+const SignUpForm = () => {
   const router = useRouter();
-  const loginSchema = z.object({
+  const signUpSchema = z.object({
+    userName: z.string().min(3),
     email: z.string().email(),
     password: z.string().min(8),
   });
 
-  const form = useForm<z.infer<typeof loginSchema>>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<z.infer<typeof signUpSchema>>({
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
+      userName: "",
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof loginSchema>) => {
+  const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
     const user = {
+      name: data.userName,
       email: data.email,
       password: data.password,
     };
-
-    const res = await signIn("credentials", {
-      email: user.email,
-      password: user.password,
-      redirect: false,
-    });
-    if (res?.error) {
+    try {
+      const res = await signUpUser(user);
+      if (res.id) {
+        toast({
+          title: "Success",
+          description: "User created successfully",
+        });
+      }
+      router.push("/login");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: res.error,
+        description: error?.message,
         variant: "destructive",
-      });
-    }
-    if (res?.ok) {
-      toast({
-        title: "Success",
-        description: "Logged in successfully",
       });
     }
   };
@@ -64,6 +66,23 @@ const LoginForm = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col gap-6"
         >
+          <FormField
+            control={form.control}
+            name="userName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>User Name</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter your user name"
+                    {...field}
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="email"
@@ -89,7 +108,6 @@ const LoginForm = () => {
                 <FormLabel>Password</FormLabel>
                 <FormControl>
                   <Input
-                    type="password"
                     placeholder="Enter your password"
                     {...field}
                   />
@@ -99,26 +117,26 @@ const LoginForm = () => {
               </FormItem>
             )}
           />
+
           <div className="flex gap-4 items-center">
             <Button
               type="submit"
               className="flex-1"
-            >
-              Login
-            </Button>
-            <p>or</p>
-            <Button
-              type="button"
-              className="flex-1"
-              onClick={() => router.push("/sign-up")}
             >
               Sign up
             </Button>
           </div>
         </form>
       </Form>
+      <Separator />
+      <Button
+        className="flex-1"
+        onClick={() => router.push("/login")}
+      >
+        Proceed to Log in
+      </Button>
     </div>
   );
 };
 
-export default LoginForm;
+export default SignUpForm;

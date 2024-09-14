@@ -13,4 +13,4 @@ export default withAuth({
     error: "/error",
   },
 });
-export const config = { matcher: ["/", "/normal-values"] };
+export const config = { matcher: ["/", "/normal-values", "/patients"] };

@@ -1,31 +1,52 @@
-import NextAuth, { Account, Profile, SessionStrategy, User } from "next-auth";
+import { loginUser } from "@/lib/actions";
+import NextAuth, { Session, SessionStrategy, User } from "next-auth";
 import { AdapterUser } from "next-auth/adapters";
-import GoogleProvider from "next-auth/providers/google";
+import { JWT } from "next-auth/jwt";
+import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions = {
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
+
+      authorize: async (credentials) => {
+        const user = await loginUser(
+          credentials as { email: string; password: string }
+        );
+        if (user) {
+          return {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+          };
+        }
+        return null;
+      },
     }),
   ],
   callbacks: {
-    async signIn({
-      account,
-    }: {
-      user: User | AdapterUser;
-      account: Account | null;
-      profile?: Profile;
-    }) {
-      if (account?.provider === "google") {
-        console.log("yes its google");
+    async jwt({ token, user }: { token: JWT; user: User | AdapterUser }) {
+      if (user) {
+        token.id = user.id;
       }
-      return true;
+      return token;
+    },
+    async session({ session, token }: { session: Session; token: JWT }) {
+      if (session.user) {
+        session.user.id = token.id as string;
+      }
+
+      return session;
     },
   },
   session: {
     strategy: "jwt" as SessionStrategy,
   },
+
   pages: {
     signIn: "/login",
   },

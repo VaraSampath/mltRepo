@@ -1,4 +1,3 @@
-import React from "react";
 import { PatientSchemaType } from "@/lib/types";
 import {
   createColumnHelper,
@@ -8,10 +7,12 @@ import {
 } from "@tanstack/react-table";
 import styles from "./styles.module.css";
 import { useQuery } from "@tanstack/react-query";
+import { getPatients } from "@/lib/actions";
+import { useSession } from "next-auth/react";
 
 const PatientsTable = () => {
   const columnHelper = createColumnHelper<PatientSchemaType>();
-
+  const { data: session } = useSession();
   const columns = [
     columnHelper.accessor((row) => row.name, {
       id: "name",
@@ -52,9 +53,10 @@ const PatientsTable = () => {
   ];
 
   const fetchPatientsData = async (): Promise<PatientSchemaType[]> => {
-    const res = await fetch("pages/api/patients");
-    const data = await res.json();
-    return data;
+    console.log(session?.user?.id, "session?.user?.id");
+
+    const data = await getPatients(session?.user?.id ?? "");
+    return data as PatientSchemaType[];
   };
 
   const { isPending, isError, data, error } = useQuery({
@@ -63,7 +65,7 @@ const PatientsTable = () => {
   });
 
   const table = useReactTable({
-    data: data || [],
+    data: data ?? [],
     columns,
     getCoreRowModel: getCoreRowModel(),
   });

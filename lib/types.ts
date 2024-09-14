@@ -4,23 +4,24 @@ export const patientSchema = z.object({
   date: z.date(),
   name: z.string().min(2).max(150),
   age: z
-    .string()
+    .number()
     .max(100)
-    .refine((val) => !Number.isNaN(parseInt(val, 10)), {
+    .refine((val) => !Number.isNaN(val), {
       message: "Expected number, received a string",
-    })
-    .optional(),
+    }),
   ageUnit: z.string().min(2).optional(),
   gender: z.string().min(2).optional(),
   phone: z.string().min(10).max(10).optional(),
   village: z.string().min(2).max(150).optional(),
   amount: z
-    .string()
-    .refine((val) => !Number.isNaN(parseInt(val, 10)), {
+    .number()
+    .refine((val) => !Number.isNaN(val), {
       message: "Expected number, received a string",
     })
     .optional(),
   referredBy: z.string().min(2).max(150).optional(),
+  authorId: z.string().min(2).max(150).optional(),
+  author: z.string().min(2).max(150).optional(),
 });
 
 export const normalValuesSchema = z.object({
@@ -30,26 +31,26 @@ export const normalValuesSchema = z.object({
   name: z.string().min(1).max(150),
   units: z.string().min(1).optional(),
   maleMax: z
-    .string()
-    .refine((val) => !Number.isNaN(parseInt(val, 10)), {
+    .number()
+    .refine((val) => !Number.isNaN(val), {
       message: "Expected number, received a string",
     })
     .optional(),
   maleMin: z
-    .string()
-    .refine((val) => !Number.isNaN(parseInt(val, 10)), {
+    .number()
+    .refine((val) => !Number.isNaN(val), {
       message: "Expected number, received a string",
     })
     .optional(),
   femaleMax: z
-    .string()
-    .refine((val) => !Number.isNaN(parseInt(val, 10)), {
+    .number()
+    .refine((val) => !Number.isNaN(val), {
       message: "Expected number, received a string",
     })
     .optional(),
   femaleMin: z
-    .string()
-    .refine((val) => !Number.isNaN(parseInt(val, 10)), {
+    .number()
+    .refine((val) => !Number.isNaN(val), {
       message: "Expected number, received a string",
     })
     .optional(),

@@ -24,6 +24,8 @@ import { patientSchema, PatientSchemaType } from "@/lib/types";
 import { Input } from "../ui/input";
 import { doctors } from "@/lib/constants";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createPatient } from "@/lib/actions";
+import { useSession } from "next-auth/react";
 
 const AddPatientDetails = () => {
   const form = useForm<PatientSchemaType>({
@@ -33,15 +35,14 @@ const AddPatientDetails = () => {
     },
   });
 
-  const addPatientsData = async (
-    bodyData: PatientSchemaType
-  ): Promise<PatientSchemaType[]> => {
-    const res = await fetch("pages/api/patients", {
-      method: "POST",
-      body: JSON.stringify(bodyData),
+  const { data: session } = useSession();
+
+  const addPatientsData = async (bodyData: PatientSchemaType) => {
+    const res = await createPatient({
+      ...bodyData,
+      author: { connect: { id: session?.user?.id as string } },
     });
-    const data = await res.json();
-    return data;
+    return { id: res.id };
   };
 
   const queryClient = useQueryClient();
@@ -106,7 +107,7 @@ const AddPatientDetails = () => {
                     <Input
                       type="number"
                       value={value}
-                      onChange={onChange}
+                      onChange={(e) => onChange(Number(e.target.value))}
                       max={100}
                     />
                   </FormControl>
@@ -207,7 +208,7 @@ const AddPatientDetails = () => {
                   <FormControl>
                     <Input
                       value={value}
-                      onChange={onChange}
+                      onChange={(e) => onChange(Number(e.target.value))}
                     />
                   </FormControl>
                   <FormMessage />

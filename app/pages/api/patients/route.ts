@@ -1,7 +1,8 @@
 import connectDB from "@/lib/connectDb";
 import { NextResponse, NextRequest } from "next/server";
-import Patients from "@/model/Patients";
+import prisma from "@/lib/db";
 import { PatientSchemaType } from "@/lib/types";
+import Patients from "@/model/Patients";
 
 connectDB();
 
@@ -9,7 +10,7 @@ export const dynamic = "force-static";
 
 export async function GET() {
   try {
-    const patients = await Patients.find().sort({ createdAt: -1 }).exec();
+    const patients = await prisma.patient.findMany();
     return NextResponse.json(patients);
   } catch (e) {
     console.error(e);
