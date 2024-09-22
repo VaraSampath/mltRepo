@@ -2,7 +2,7 @@
 
 import { Prisma } from "@prisma/client";
 import prisma from "./db";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 export async function getPatients(authorId: string) {
   console.log(authorId, "authorId");
@@ -28,6 +28,7 @@ export async function loginUser(user: { email: string; password: string }) {
     user.password,
     existingUser.password
   );
+  console.log(passwordMatch, "passwordMatch");
   if (!passwordMatch) {
     throw new Error("Invalid password");
   }
