@@ -3,21 +3,14 @@ import { z } from "zod";
 export const patientSchema = z.object({
   date: z.date(),
   name: z.string().min(2).max(150),
-  age: z
-    .number()
-    .max(100)
-    .refine((val) => !Number.isNaN(val), {
-      message: "Expected number, received a string",
-    }),
+  age: z.number().max(100),
   ageUnit: z.string().min(2).optional(),
   gender: z.string().min(2).optional(),
   phone: z.string().min(10).max(10).optional(),
   village: z.string().min(2).max(150).optional(),
   amount: z
     .number()
-    .refine((val) => !Number.isNaN(val), {
-      message: "Expected number, received a string",
-    })
+
     .optional(),
   referredBy: z.string().min(2).max(150).optional(),
   authorId: z.string().min(2).max(150).optional(),
@@ -32,27 +25,19 @@ export const normalValuesSchema = z.object({
   units: z.string().min(1).optional(),
   maleMax: z
     .number()
-    .refine((val) => !Number.isNaN(val), {
-      message: "Expected number, received a string",
-    })
+
     .optional(),
   maleMin: z
     .number()
-    .refine((val) => !Number.isNaN(val), {
-      message: "Expected number, received a string",
-    })
+
     .optional(),
   femaleMax: z
     .number()
-    .refine((val) => !Number.isNaN(val), {
-      message: "Expected number, received a string",
-    })
+
     .optional(),
   femaleMin: z
     .number()
-    .refine((val) => !Number.isNaN(val), {
-      message: "Expected number, received a string",
-    })
+
     .optional(),
 });
 

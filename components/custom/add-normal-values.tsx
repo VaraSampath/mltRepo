@@ -141,7 +141,9 @@ const AddNormalValues = () => {
                   <Input
                     type="number"
                     value={value}
-                    onChange={onChange}
+                    onChange={(e) => {
+                      onChange(Number(e.currentTarget.value));
+                    }}
                   />
                 </FormControl>
                 <FormMessage />
@@ -158,7 +160,9 @@ const AddNormalValues = () => {
                   <Input
                     type="number"
                     value={value}
-                    onChange={onChange}
+                    onChange={(e) => {
+                      onChange(Number(e.currentTarget.value));
+                    }}
                   />
                 </FormControl>
                 <FormMessage />
@@ -176,7 +180,9 @@ const AddNormalValues = () => {
                   <Input
                     type="number"
                     value={value}
-                    onChange={onChange}
+                    onChange={(e) => {
+                      onChange(Number(e.currentTarget.value));
+                    }}
                   />
                 </FormControl>
                 <FormMessage />
@@ -193,7 +199,9 @@ const AddNormalValues = () => {
                   <Input
                     type="number"
                     value={value}
-                    onChange={onChange}
+                    onChange={(e) => {
+                      onChange(Number(e.currentTarget.value));
+                    }}
                   />
                 </FormControl>
                 <FormMessage />
